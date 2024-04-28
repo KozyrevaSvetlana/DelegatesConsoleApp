@@ -10,7 +10,7 @@ namespace DelegatesConsoleApp
     {
         public void Message(string name)
         {
-            Console.WriteLine($"Файл с именем {name} нашелся") ;
+            Console.WriteLine($"Файл с именем {name} нашелся");
         }
     }
 }

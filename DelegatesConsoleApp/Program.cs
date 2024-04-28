@@ -1,4 +1,6 @@
-﻿namespace DelegatesConsoleApp
+﻿using System.Threading.Tasks;
+
+namespace DelegatesConsoleApp
 {
     internal class Program
     {
@@ -7,10 +9,30 @@
             var fileFounder = new FileFounder();
             var handler = new FileArgs();
 
-            fileFounder.fileFound += handler.Message;
+            fileFounder.FileFound += handler.Message;
 
-            var path = "C:\\";
-            fileFounder.FindFilesByPath(path);
+            var cancelTokenSource = new CancellationTokenSource();
+            var token = cancelTokenSource.Token;
+
+            try
+            {
+                var path = "C:\\";
+                fileFounder.FindFilesByPath(path, token).Wait();
+            }
+            catch (AggregateException ae)
+            {
+                foreach (Exception e in ae.InnerExceptions)
+                {
+                    if (e is TaskCanceledException)
+                        Console.WriteLine("Операция прервана");
+                    else
+                        Console.WriteLine(e.Message);
+                }
+            }
+            finally
+            {
+                cancelTokenSource.Dispose();
+            }
         }
     }
 }

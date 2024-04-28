@@ -4,18 +4,24 @@
     {
         public delegate void EventHandler(string name);
 
-        public event EventHandler fileFound;
-        public void FindFilesByPath(string path)
+        public event EventHandler FileFound;
+        public async Task FindFilesByPath(string path, CancellationToken token)
         {
-            if (Directory.Exists(path))
+            var task = new Task(() =>
             {
-                var files = Directory.GetFiles(path);
-                foreach (var file in files)
+                if (Directory.Exists(path))
                 {
-                    fileFound(file);
+                    var files = Directory.GetFiles(path);
+                    foreach (var file in files)
+                    {
+                        if (token.IsCancellationRequested)
+                            token.ThrowIfCancellationRequested(); // генерируем исключение
+                        FileFound(file);
+                    }
                 }
-            }
-            
+            }, token);
+            task.Start();
+            task.Wait();
         }
     }
 }
