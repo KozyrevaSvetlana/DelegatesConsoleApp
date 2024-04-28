@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace DelegatesConsoleApp
 {
@@ -33,6 +33,19 @@ namespace DelegatesConsoleApp
             {
                 cancelTokenSource.Dispose();
             }
+
         }
+
     }
+
+    // как тут записать правильно чтобы ошибок не было???
+
+    //delegate float ParseFloat<T>(T value);
+
+    //public static class MyClass
+    //{
+    //    public static T GetMax(this IEnumerable collection, Func<T, float> convertToNumber) where T : class
+    //    {
+    //    }
+    //}
 }
