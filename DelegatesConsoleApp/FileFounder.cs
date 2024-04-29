@@ -5,7 +5,7 @@
         public delegate void EventHandler(string name);
 
         public event EventHandler FileFound;
-        public async Task FindFilesByPath(string path, CancellationToken token)
+        public Task FindFilesByPath(string path, CancellationToken token)
         {
             var task = new Task(() =>
             {
@@ -22,6 +22,7 @@
             }, token);
             task.Start();
             task.Wait();
+            return Task.CompletedTask;
         }
     }
 }

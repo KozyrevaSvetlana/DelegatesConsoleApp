@@ -1,4 +1,6 @@
-﻿namespace DelegatesConsoleApp
+﻿using System.Globalization;
+
+namespace DelegatesConsoleApp
 {
     public static class Extentions
     {
@@ -9,7 +11,7 @@
             foreach (var item in collection)
             {
                 var itemValue = convertToNumber(item);
-                if(maxValue == null && itemValue >= maxValue)
+                if (maxValue == null || itemValue > maxValue)
                 {
                     maxValue = itemValue;
                     maxT = item;
@@ -17,6 +19,14 @@
             }
 
             return maxT;
+        }
+
+
+        public static float? ConvertToFloat(TClass? item)
+        {
+            if (string.IsNullOrEmpty(item?.Value ?? null) || !float.TryParse(item!.Value, CultureInfo.InvariantCulture, out float result))
+                return null;
+            return result;
         }
     }
 }

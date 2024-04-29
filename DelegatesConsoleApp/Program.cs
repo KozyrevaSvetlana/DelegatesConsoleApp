@@ -1,22 +1,19 @@
-﻿using System.Collections;
-
-namespace DelegatesConsoleApp
+﻿namespace DelegatesConsoleApp
 {
     internal class Program
     {
         delegate float? NewDelegate<T>(T? t);
         static void Main(string[] args)
         {
+
+            var float1 = 3_000.5F;
             var items = new List<TClass>()
             {
-                new TClass(){ Value = "0.14F"},
-                new TClass(){ Value = "1F"},
-                new TClass(){ Value = "3F"},
-                new TClass(){ Value = "5.0F"},
-                new TClass(){ Value = "4.97F"},
-                new TClass(){ Value = "6.5F"},
+                new TClass(){ Value = float1.ToString()},
+                new TClass(){ Value = (float1 + 1).ToString()},
+                new TClass(){ Value = (float1 + 5).ToString()},
             };
-            var mes = new NewDelegate<TClass>(ConvertToFloat);
+            var mes = new NewDelegate<TClass>(Extentions.ConvertToFloat);
             var maxT = items.GetMax((test) => mes.Invoke(test));
             Console.WriteLine(maxT?.Value);
 
@@ -47,14 +44,6 @@ namespace DelegatesConsoleApp
             {
                 cancelTokenSource.Dispose();
             }
-
-        }
-
-        public static float? ConvertToFloat(TClass? item)
-        {
-            if (string.IsNullOrEmpty(item?.Value ?? null) || !float.TryParse(item!.Value, out float result))
-                return null;
-            return result;
         }
     }
 }
