@@ -4,8 +4,22 @@ namespace DelegatesConsoleApp
 {
     internal class Program
     {
+        delegate float? NewDelegate<T>(T? t);
         static void Main(string[] args)
         {
+            var items = new List<TClass>()
+            {
+                new TClass(){ Value = "0.14F"},
+                new TClass(){ Value = "1F"},
+                new TClass(){ Value = "3F"},
+                new TClass(){ Value = "5.0F"},
+                new TClass(){ Value = "4.97F"},
+                new TClass(){ Value = "6.5F"},
+            };
+            var mes = new NewDelegate<TClass>(ConvertToFloat);
+            var maxT = items.GetMax((test) => mes.Invoke(test));
+            Console.WriteLine(maxT?.Value);
+
             var fileFounder = new FileFounder();
             var handler = new FileArgs();
 
@@ -36,16 +50,11 @@ namespace DelegatesConsoleApp
 
         }
 
+        public static float? ConvertToFloat(TClass? item)
+        {
+            if (string.IsNullOrEmpty(item?.Value ?? null) || !float.TryParse(item!.Value, out float result))
+                return null;
+            return result;
+        }
     }
-
-    // как тут записать правильно чтобы ошибок не было???
-
-    //delegate float ParseFloat<T>(T value);
-
-    //public static class MyClass
-    //{
-    //    public static T GetMax(this IEnumerable collection, Func<T, float> convertToNumber) where T : class
-    //    {
-    //    }
-    //}
 }
